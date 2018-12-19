@@ -169,6 +169,6 @@ Python library can be imported from inside the containers with `import plumber`.
 Examples
 --------
 
-* [Alexa-subdomains-capture](examples/alexa-subdomains-capture/) is a three-staged cluster to scan the Alexa top 1K subdomains and take a screenshot of every HTTPS website found. It is written in shell script and uses HTTP API for the communications inside the cluster.
-* [Test-API](examples/test-api/) is a single-staged cluster for API testing. It is written in Python.
+* [Alexa-subdomains-capture](examples/alexa-subdomains-capture/) is a three-stage cluster to scan the Alexa top 1K subdomains and take a screenshot of every HTTPS website found. It is written in shell script and uses HTTP API for the communications inside the cluster.
+* [Test-API](examples/test-api/) is a single-stage cluster for API testing. It is written in Python.
 
