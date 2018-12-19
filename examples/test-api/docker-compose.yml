@@ -1,0 +1,18 @@
+version: '3.1'
+
+services:
+
+  stage-1:
+    hostname: stage-1
+    build: stage-1/
+    restart: on-failure
+    deploy:
+      replicas: 1
+    environment:
+      CONCURRENT_SCRIPTS: 1
+      IDLE: 60
+      CLUSTER_NAME: test-api
+      STAGE: 1
+    volumes:
+      - ./stage-1/scripts/:/plumber/scripts/
+    command: /plumber/run-scripts.sh

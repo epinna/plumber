@@ -1,0 +1,49 @@
+version: '3.1'
+
+services:
+
+  stage-1:
+    hostname: stage-1
+    build: stage-1/
+    restart: on-failure
+    deploy:
+      replicas: 1 # Single container
+    environment:
+      CONCURRENT_SCRIPTS: 1
+      IDLE: 43200 # Run scripts every 12H
+      CLUSTER_NAME: alexa-subdomains-capture
+      STAGE: 1
+    volumes:
+      - ./stage-1/scripts/:/plumber/scripts/
+    command: /plumber/run-scripts.sh
+
+  stage-2:
+    hostname: stage-2
+    build: stage-2/
+    restart: on-failure
+    deploy:
+      replicas: 3 # Set of 3 containers
+    environment:
+      CONCURRENT_SCRIPTS: 1
+      IDLE: 0 # No delay between runs
+      CLUSTER_NAME: alexa-subdomains-capture
+      STAGE: 2
+    volumes:
+      - ./stage-2/scripts/:/plumber/scripts/
+    command: /plumber/run-scripts.sh
+
+  stage-3:
+    hostname: stage-3
+    build: stage-3/
+    restart: on-failure
+    deploy:
+      replicas: 10 # Set of 10 containers
+    environment:
+      CONCURRENT_SCRIPTS: 1
+      IDLE: 0 # No delay between runs
+      CLUSTER_NAME: alexa-subdomains-capture
+      STAGE: 3
+    volumes:
+      - ./stage-3/scripts/:/plumber/scripts/
+      - /tmp/captures/:/tmp/captures/
+    command: /plumber/run-scripts.sh
