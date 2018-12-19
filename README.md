@@ -1,15 +1,15 @@
 Plumber
 =======
 
-Plumber is a tool to setup scalable language-agnostic clusters of workers to automate DevOps tasks.
+Plumber is a tool to setup scalable, language-agnostic pipelines of workers for IT automation tasks.
 
-The task is break down in multiple stages, each one has a set of containers that work in parallel on the same sub-task. The containers use the Plumber API to communicate across the stages via FIFO queues.
+The task is decomposed as a series of indipendentent stages, each one formed by a set of containers that work in parallel on the same sub-task, implementing the [Pipes and Filters](https://docs.microsoft.com/en-us/azure/architecture/patterns/pipes-and-filters) pattern. The input and output of each stage is a stream of data passed via Plumber API.
 
 ![Cluster](resources/docs/cluster.png "Cluster")
 
-The orchestration with Docker Compose allows arbitrary scaling of parallel containers and the distribution of the load across mutiple underlying nodes with Swarm. The queues and data storage are based on Mongo database and can be consumed via the Plumber API. 
+The containers that make up the pipeline can be scaled independently and can be distributed across different servers, taking advantage of the elasticity that Docker Compose and Swarm provide. The data stream and storage is provided via Plumber API built upon Mongo database. 
 
-Plumber is designed for heavy automation and is not suitable for fine graned computational tasks.
+Plumber is designed for heavy DevOps automation and is not suitable for fine graned computational tasks.
 
 Cluster
 -------
