@@ -50,7 +50,7 @@ function parse_argument() {
     exit 1
   }
 
-  PIPELINE_FOLDER=${POSITIONAL[0]}
+  PIPELINE_FOLDER=$(realpath ${POSITIONAL[0]})
 
   test $BUILD_ONLY && { return; }
 
@@ -221,7 +221,11 @@ function build_workers_image() {
 
 }
 
+# Program start
+
 parse_argument $@
+
+cd "$(dirname "$(realpath "$0")")";
 
 build_base_image
 build_api_image
