@@ -2,9 +2,9 @@ version: '3.1'
 
 services:
 
-  stage-1:
-    hostname: stage-1
-    build: stage-1/
+  stage-01:
+    hostname: stage-01
+    build: stage-01/
     restart: on-failure
     deploy:
       replicas: 1
@@ -14,5 +14,5 @@ services:
       PIPELINE_NAME: test-api
       STAGE: 1
     volumes:
-      - ./stage-1/scripts/:/plumber/scripts/
+      - ./stage-01/scripts/:/plumber/scripts/
     command: /plumber/run-scripts.sh

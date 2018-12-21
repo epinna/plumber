@@ -241,6 +241,8 @@ test -z "$BUILD_ONLY" && {
 
   for ((STAGE_NUM=1;STAGE_NUM<=STAGES_QTY;STAGE_NUM++)); do
 
+    STAGE_NUM=$(printf %02d $STAGE_NUM)
+
     STAGE_NAME="${PIPELINE_NAME}-stage-${STAGE_NUM}"
     STAGE_FOLDER="${PIPELINE_FOLDER}/stage-${STAGE_NUM}"
     STAGE_IMAGE="${STAGE_NAME}-img"

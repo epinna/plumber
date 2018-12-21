@@ -2,9 +2,9 @@ version: '3.1'
 
 services:
 
-  stage-1:
-    hostname: stage-1
-    build: stage-1/
+  stage-01:
+    hostname: stage-01
+    build: stage-01/
     restart: on-failure
     deploy:
       replicas: 1 # Single container
@@ -14,12 +14,12 @@ services:
       PIPELINE_NAME: alexa-subdomains-capture
       STAGE: 1
     volumes:
-      - ./stage-1/scripts/:/plumber/scripts/
+      - ./stage-01/scripts/:/plumber/scripts/
     command: /plumber/run-scripts.sh
 
-  stage-2:
-    hostname: stage-2
-    build: stage-2/
+  stage-02:
+    hostname: stage-02
+    build: stage-02/
     restart: on-failure
     deploy:
       replicas: 3 # Set of 3 containers
@@ -29,12 +29,12 @@ services:
       PIPELINE_NAME: alexa-subdomains-capture
       STAGE: 2
     volumes:
-      - ./stage-2/scripts/:/plumber/scripts/
+      - ./stage-02/scripts/:/plumber/scripts/
     command: /plumber/run-scripts.sh
 
-  stage-3:
-    hostname: stage-3
-    build: stage-3/
+  stage-03:
+    hostname: stage-03
+    build: stage-03/
     restart: on-failure
     deploy:
       replicas: 10 # Set of 10 containers
@@ -44,6 +44,6 @@ services:
       PIPELINE_NAME: alexa-subdomains-capture
       STAGE: 3
     volumes:
-      - ./stage-3/scripts/:/plumber/scripts/
+      - ./stage-03/scripts/:/plumber/scripts/
       - /tmp/captures/:/tmp/captures/
     command: /plumber/run-scripts.sh

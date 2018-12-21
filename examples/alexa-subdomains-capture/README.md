@@ -10,7 +10,7 @@ Stage 1
 
 The first stage has a single container that collects the Alexa top 1K every day.
 
-### /stage-1/scripts/01-get-alexa-top-1K.sh
+### /stage-01/scripts/01-get-alexa-top-1K.sh
 
 ```
 #!/bin/bash
@@ -32,7 +32,7 @@ head -n $TOP_DOMAINS_QTY top-1m.csv | \
 
 ```
 services:
-  stage-1:
+  stage-01:
     deploy:
       replicas: 1 # Single container
     environment:
@@ -44,7 +44,7 @@ Stage 2
 
 The second stage enumerates the subdomains.
 
-### /stage-2/scripts/01-enumerate-subdomains.sh
+### /stage-02/scripts/01-enumerate-subdomains.sh
 
 ```
 #!/bin/bash 
@@ -69,7 +69,7 @@ echo "$SUBDOMAINS_LIST" | curl -s "http://plumber/$NEXT_STAGE/push?format=plain&
 
 ```
 services:
-  stage-2:
+  stage-02:
     deploy:
       replicas: 3 # Set of 3 containers
     environment:
@@ -81,7 +81,7 @@ Stage 3
 
 The third stage gets a screenshot of every HTTPS website in the subdomains and save it in a folder on the host.
 
-### /stage-3/scripts/01-get-screenshot.sh
+### /stage-03/scripts/01-get-screenshot.sh
 
 ```
 #!/bin/bash
@@ -100,7 +100,7 @@ curl --max-time 20 -s "https://$SUBDOMAIN" -o /dev/null && \
 ### docker-compose.yml
 
 ```
-  stage-3:
+  stage-03:
     deploy:
       replicas: 10 # Set of 10 containers
     environment:
@@ -116,6 +116,6 @@ Use `docker-compose` to manage the pipeline.
 
 ```
 docker-compose up -d                                    # Start the pipeline
-docker-compose logs -f stage-1 stage-2 stage-3 plumber  # Print the logs of stages and API
+docker-compose logs -f stage-01 stage-02 stage-03 plumber  # Print the logs of stages and API
 docker-compose down                                     # Shut down the pipeline
 ```

@@ -23,13 +23,13 @@ $ ./init.sh ./my-pipeline 3
 ```
 $ tree -F my-pipeline/
 my-pipeline/
-├── stage-1/
+├── stage-01/
 │   ├── Dockerfile
 │   └── scripts/
-├── stage-2/
+├── stage-02/
 │   ├── Dockerfile
 │   └── scripts/
-├── stage-3/
+├── stage-03/
 │   ├── Dockerfile
 │   └── scripts/
 ├── docker-compose.override.yml
@@ -38,7 +38,7 @@ my-pipeline/
 
 * `docker-compose.yml` defines the environment and shall be modified to customize the interval between executions, the initial number of replicas, and other options.
 * `docker-compose.override.yml` defines the internal services such as Mongo Database and the Plumber HTTP API service, which don't usually require any change. 
-* Folders `stage-1/`, `stage-2/`, and `stage-3/` contain the Docker build data for each stage. Customize the `Dockerfile` to install additional tools or libraries.
+* Folders `stage-01/`, `stage-02/`, and `stage-03/` contain the Docker build data for each stage. Customize the `Dockerfile` to install additional tools or libraries.
 * Folders `script/` shall contain your executable scripts that are periodically executed to process the data for every stage. 
 
 Run `docker-compose` from inside the folder to manage the pipeline.
