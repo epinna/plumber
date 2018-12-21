@@ -50,7 +50,10 @@ function parse_argument() {
     exit 1
   }
 
-  PIPELINE_FOLDER=$(realpath ${POSITIONAL[0]})
+  PIPELINE_FOLDER=$(realpath ${POSITIONAL[0]} 2>/dev/null) || {
+    echo "ERROR Can't resolve pipeline folder"
+    exit 1
+  }
 
   test $BUILD_ONLY && { return; }
 
