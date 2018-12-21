@@ -1,0 +1,15 @@
+
+  stage-${STAGE_NUM}:
+    hostname: stage-${STAGE_NUM}
+    build: stage-${STAGE_NUM}/
+    restart: on-failure
+    deploy:
+      replicas: ${REPLICAS}
+    environment:
+      CONCURRENT_SCRIPTS: ${CONCURRENT_SCRIPTS}
+      IDLE: ${IDLE}
+      PIPELINE_NAME: ${PIPELINE_NAME}
+      STAGE: ${STAGE_NUM}
+    volumes:
+      - ./stage-${STAGE_NUM}/scripts/:/plumber/scripts/
+    command: /plumber/run-scripts.sh

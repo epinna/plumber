@@ -5,24 +5,24 @@ Plumber is a tool to setup scalable, language-agnostic pipelines of workers for 
 
 The task is decomposed as a series of indipendentent stages, each one formed by a set of containers that work in parallel on the same sub-task, implementing the [Pipes and Filters](https://docs.microsoft.com/en-us/azure/architecture/patterns/pipes-and-filters) pattern. The input and output of each stage is a stream of data passed via Plumber API.
 
-![Cluster](resources/docs/cluster.png "Cluster")
+![Pipeline](resources/docs/pipeline.png "Pipeline")
 
 The containers that make up the pipeline can be scaled independently and can be distributed across different servers, taking advantage of the elasticity that Docker Compose and Swarm provide. The data stream and storage is provided via Plumber API built upon Mongo database. 
 
 Plumber is designed for heavy DevOps automation and is not suitable for fine graned computational tasks.
 
-Cluster
--------
+Pipeline
+--------
 
-Run `init.sh` to initialize the structure of a new cluster in a new folder.
-
-```
-$ ./init.sh ./my-cluster 3
-```
+Run `init.sh` to initialize the structure of a new pipeline in a new folder.
 
 ```
-$ tree -F my-cluster/
-my-cluster/
+$ ./init.sh ./my-pipeline 3
+```
+
+```
+$ tree -F my-pipeline/
+my-pipeline/
 ├── stage-1/
 │   ├── Dockerfile
 │   └── scripts/
@@ -41,7 +41,7 @@ my-cluster/
 * Folders `stage-1/`, `stage-2/`, and `stage-3/` contain the Docker build data for each stage. Customize the `Dockerfile` to install additional tools or libraries.
 * Folders `script/` shall contain your executable scripts that are periodically executed to process the data for every stage. 
 
-Run `docker-compose` from inside the folder to manage the cluster.
+Run `docker-compose` from inside the folder to manage the pipeline.
 
 Plumber API
 -----------
@@ -169,6 +169,6 @@ Python library can be imported from inside the containers with `import plumber`.
 Examples
 --------
 
-* [Alexa-subdomains-capture](examples/alexa-subdomains-capture/) is a three-stage cluster to scan the Alexa top 1K subdomains and take a screenshot of every HTTPS website found. It is written in shell script and uses HTTP API for the communications inside the cluster.
-* [Test-API](examples/test-api/) is a single-stage cluster for API testing. It is written in Python.
+* [Alexa-subdomains-capture](examples/alexa-subdomains-capture/) is a three-stage pipeline to scan the Alexa top 1K subdomains and take a screenshot of every HTTPS website found. It is written in shell script and uses HTTP API for the communications inside the pipeline.
+* [Test-API](examples/test-api/) is a single-stage pipeline for API testing. It is written in Python.
 

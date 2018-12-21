@@ -1,7 +1,7 @@
 alexa-subdomains-webservers
 ===========================
 
-This cluster daily gets the updated Alexa 1K top websites lists, enumerates their subdomains using [crt.sh](https://crt.sh) service, and finally collect the screenshots of the HTTPS websites in a folder.
+This pipeline daily gets the updated Alexa 1K top websites lists, enumerates their subdomains using [crt.sh](https://crt.sh) service, and finally collect the screenshots of the HTTPS websites in a folder.
 
 This is an example on how to consume the Plumber API using shell scripts. It is deliberately simple and not optimized and does not manage errors and other corner cases.
 
@@ -112,10 +112,10 @@ curl --max-time 20 -s "https://$SUBDOMAIN" -o /dev/null && \
 Usage
 =====
 
-Use `docker-compose` to manage the cluster.
+Use `docker-compose` to manage the pipeline.
 
 ```
-docker-compose up -d                                    # Start the cluster
+docker-compose up -d                                    # Start the pipeline
 docker-compose logs -f stage-1 stage-2 stage-3 plumber  # Print the logs of stages and API
-docker-compose down                                     # Shut down the cluster
+docker-compose down                                     # Shut down the pipeline
 ```

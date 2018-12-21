@@ -31,7 +31,7 @@ function parse_argument() {
         shift 
         ;;
         -n|--name)
-        CLUSTER_NAME=$2
+        PIPELINE_NAME=$2
         shift 
         shift 
         ;;
@@ -45,12 +45,12 @@ function parse_argument() {
   set -- "${POSITIONAL[@]}" # restore positional parameters
 
   test -z "${POSITIONAL[0]}" && {
-    echo "ERROR Cluster folder is missing"
+    echo "ERROR Pipeline folder is missing"
     print_help
     exit 1
   }
 
-  CLUSTER_FOLDER=${POSITIONAL[0]}
+  PIPELINE_FOLDER=${POSITIONAL[0]}
 
   test $BUILD_ONLY && { return; }
 
@@ -69,12 +69,12 @@ function print_help() {
 
 Usage:
 
-  $0 [options] <cluster folder> [# of stages]
+  $0 [options] <pipeline folder> [# of stages]
 
 Options:
 
-  -f, --force         Backup the existing folder and re-init the cluster
-  -n, --name          Specify project name (default: cluster folder name) 
+  -f, --force         Backup the existing folder and re-init the pipeline
+  -n, --name          Specify project name (default: pipeline folder name) 
   --no-cache          Force rebuild of base image
   --build-only        Rebuild the base and the worker images only
 
@@ -108,14 +108,14 @@ function build_api_image() {
   echo "OK"
 
 }
-function check_cluster_folder() {
+function check_pipeline_folder() {
 
-  test -z "$CLUSTER_NAME" && CLUSTER_NAME="$(basename $CLUSTER_FOLDER)"
+  test -z "$PIPELINE_NAME" && PIPELINE_NAME="$(basename $PIPELINE_FOLDER)"
 
-  printf "[+] $CLUSTER_NAME folder cluster $CLUSTER_FOLDER.. "
+  printf "[+] $PIPELINE_NAME folder pipeline $PIPELINE_FOLDER.. "
     
-  # Check cluster folder presence
-  if [[ -d "${CLUSTER_FOLDER}" ]]; then
+  # Check pipeline folder presence
+  if [[ -d "${PIPELINE_FOLDER}" ]]; then
 
     # Exit if already there
     test "${FORCE}" != "YES" && {
@@ -125,14 +125,14 @@ function check_cluster_folder() {
 
     # Backup if forcing overwrite
     BACKUP_FOLDER="$(mktemp -d)"
-    mv "${CLUSTER_FOLDER}" "${BACKUP_FOLDER}" || {
-     echo -e "ERROR\n    Error doing a backup of ${CLUSTER_FOLDER}" 
+    mv "${PIPELINE_FOLDER}" "${BACKUP_FOLDER}" || {
+     echo -e "ERROR\n    Error doing a backup of ${PIPELINE_FOLDER}" 
      exit 1
     }
 
-    # Create cluster folder
-    mkdir -p $CLUSTER_FOLDER || {
-      echo -e "ERROR\n    Error creating ${CLUSTER_FOLDER}" 
+    # Create pipeline folder
+    mkdir -p $PIPELINE_FOLDER || {
+      echo -e "ERROR\n    Error creating ${PIPELINE_FOLDER}" 
       exit 1
     }
 
@@ -140,9 +140,9 @@ function check_cluster_folder() {
 
   else
 
-    # Create cluster folder
-    mkdir -p $CLUSTER_FOLDER || {
-      echo -e "ERROR\n    Error creating ${CLUSTER_FOLDER}" 
+    # Create pipeline folder
+    mkdir -p $PIPELINE_FOLDER || {
+      echo -e "ERROR\n    Error creating ${PIPELINE_FOLDER}" 
       exit 1
     }
 
@@ -151,13 +151,13 @@ function check_cluster_folder() {
 
 }
 
-function add_cluster_compose() {
+function add_pipeline_compose() {
 
-  printf "[+] $CLUSTER_NAME cluster compose file.. "
+  printf "[+] $PIPELINE_NAME pipeline compose file.. "
 
-  CLUSTER_COMPOSEFILE="$CLUSTER_FOLDER/docker-compose.override.yml"
-  envsubst < resources/cluster/docker-compose.override.yml > "${CLUSTER_COMPOSEFILE}" || {
-   echo -e "ERROR\n    Error creating ${CLUSTER_COMPOSEFILE}" 
+  PIPELINE_COMPOSEFILE="$PIPELINE_FOLDER/docker-compose.override.yml"
+  envsubst < resources/pipeline/docker-compose.override.yml > "${PIPELINE_COMPOSEFILE}" || {
+   echo -e "ERROR\n    Error creating ${PIPELINE_COMPOSEFILE}" 
    exit 1
   }
   echo "OK"
@@ -167,7 +167,7 @@ function copy_stage_data() {
 
   printf "[+] $STAGE_NAME stage data.. "
 
-  cp -r resources/cluster/data "${STAGE_FOLDER}" || {
+  cp -r resources/pipeline/data "${STAGE_FOLDER}" || {
    echo -e "ERROR\n    Error copying data to ${STAGE_FOLDER}" 
    exit 1
   }
@@ -184,7 +184,7 @@ function add_stage_compose() {
 
   printf "[+] Add $STAGE_NAME compose file.. "
 
-  envsubst < resources/cluster/docker-compose.yml >> $STAGE_COMPOSEFILE || {
+  envsubst < resources/pipeline/docker-compose.yml >> $STAGE_COMPOSEFILE || {
    echo -e "ERROR\n    Error creating ${STAGE_COMPOSEFILE}" 
    exit 1
   }
@@ -198,7 +198,7 @@ function start_stages_compose() {
 
   printf "[+] Init stages compose file.. "
   
-  cp resources/cluster/docker-compose.start.yml $STAGE_COMPOSEFILE || {
+  cp resources/pipeline/docker-compose.start.yml $STAGE_COMPOSEFILE || {
    echo -e "ERROR\n    Error creating ${STAGE_COMPOSEFILE}" 
    exit 1
   }
@@ -212,7 +212,7 @@ function build_workers_image() {
   printf "[+] Workers images.. "
 
   BUILDLOG="$(mktemp)"
-  ( cd "${CLUSTER_FOLDER}" && docker-compose build ) &>$BUILDLOG || { 
+  ( cd "${PIPELINE_FOLDER}" && docker-compose build ) &>$BUILDLOG || { 
     echo -e "ERROR\n    See $BUILDLOG for more info" 
     exit 1
   } 
@@ -228,17 +228,17 @@ build_api_image
 
 test -z "$BUILD_ONLY" && { 
 
-  check_cluster_folder
-  add_cluster_compose
+  check_pipeline_folder
+  add_pipeline_compose
 
-  STAGE_COMPOSEFILE="$CLUSTER_FOLDER/docker-compose.yml"
+  STAGE_COMPOSEFILE="$PIPELINE_FOLDER/docker-compose.yml"
 
   start_stages_compose
 
   for ((STAGE_NUM=1;STAGE_NUM<=STAGES_QTY;STAGE_NUM++)); do
 
-    STAGE_NAME="${CLUSTER_NAME}-stage-${STAGE_NUM}"
-    STAGE_FOLDER="${CLUSTER_FOLDER}/stage-${STAGE_NUM}"
+    STAGE_NAME="${PIPELINE_NAME}-stage-${STAGE_NUM}"
+    STAGE_FOLDER="${PIPELINE_FOLDER}/stage-${STAGE_NUM}"
     STAGE_IMAGE="${STAGE_NAME}-img"
 
     copy_stage_data

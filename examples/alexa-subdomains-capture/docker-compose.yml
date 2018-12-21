@@ -11,7 +11,7 @@ services:
     environment:
       CONCURRENT_SCRIPTS: 1
       IDLE: 43200 # Run scripts every 12H
-      CLUSTER_NAME: alexa-subdomains-capture
+      PIPELINE_NAME: alexa-subdomains-capture
       STAGE: 1
     volumes:
       - ./stage-1/scripts/:/plumber/scripts/
@@ -26,7 +26,7 @@ services:
     environment:
       CONCURRENT_SCRIPTS: 1
       IDLE: 0 # No delay between runs
-      CLUSTER_NAME: alexa-subdomains-capture
+      PIPELINE_NAME: alexa-subdomains-capture
       STAGE: 2
     volumes:
       - ./stage-2/scripts/:/plumber/scripts/
@@ -41,7 +41,7 @@ services:
     environment:
       CONCURRENT_SCRIPTS: 1
       IDLE: 0 # No delay between runs
-      CLUSTER_NAME: alexa-subdomains-capture
+      PIPELINE_NAME: alexa-subdomains-capture
       STAGE: 3
     volumes:
       - ./stage-3/scripts/:/plumber/scripts/
