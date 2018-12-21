@@ -114,7 +114,7 @@ Endpoints can be accessed via `http://plumber/` from inside the containers netwo
 
 Python library can be imported from inside the containers with `import plumber`.
 
-* **async def push(stage, entry_list, push_if_new = False, push_if_older_than = 0)**
+* **def push(stage, entry_list, push_if_new = False, push_if_older_than = 0)**
 
     Push entries to a stage queue.
 
@@ -127,7 +127,7 @@ Python library can be imported from inside the containers with `import plumber`.
     
     Returns: the number of pushed entries.
 
-* **async def pop(stage, quantity = 1)**
+* **def pop(stage, quantity = 1)**
 
     Pop entries from a stage queue.
 
@@ -138,12 +138,12 @@ Python library can be imported from inside the containers with `import plumber`.
     
     Returns the data objects.
 
-* **async def flush(stage)**
+* **def flush(stage)**
 
     Flush stage queue.
 
 
-* **async def store(stage, json_data)**
+* **def store(stage, json_data)**
 
     Store an entry to the database.
 
@@ -154,7 +154,7 @@ Python library can be imported from inside the containers with `import plumber`.
     
     Returns the Mongo ObjectID of the insterted object in string format.
 
-* **async def load(stage, filter_, delete)**
+* **def load(stage, filter_, delete)**
 
     Load an entry from the database.
 

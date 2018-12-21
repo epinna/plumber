@@ -17,7 +17,7 @@ def _lazy_connect():
     if not mdb:
         mdb = pymongo.MongoClient(MONGO_HOST)
 
-async def flush(stage):
+def flush(stage):
     """
     Flush stage queue.
     """
@@ -29,7 +29,7 @@ async def flush(stage):
     log.debug('stage-%d delete' % (stage))
 
 
-async def pop(stage, quantity = 1):
+def pop(stage, quantity = 1):
     """Pop entries from a stage queue.
 
     Parameters:
@@ -64,7 +64,7 @@ async def pop(stage, quantity = 1):
             )
     return results
 
-async def push(stage, entry_list, push_if_new = False, push_if_older_than = 0):
+def push(stage, entry_list, push_if_new = False, push_if_older_than = 0):
     """Push entries to a stage queue.
 
     Parameters:
@@ -182,7 +182,7 @@ async def push(stage, entry_list, push_if_new = False, push_if_older_than = 0):
 
         return len(result.inserted_ids)
 
-async def store(stage, json_data):
+def store(stage, json_data):
     """Store an entry to the database.
 
     Parameters:
@@ -207,7 +207,7 @@ async def store(stage, json_data):
 
     return str(result.inserted_id)
 
-async def load(stage, filter_, delete):
+def load(stage, filter_, delete):
     """Load an entry from the database.
 
     Parameters:

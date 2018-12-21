@@ -53,7 +53,7 @@ async def flush(request):
         log.warning(text)
         return web.Response(status = 400, text = text)
 
-    await api.flush(stage)
+    api.flush(stage)
 
     return web.Response()
 
@@ -104,7 +104,7 @@ async def pop(request):
         return web.Response(status = 400, text = text)
     quantity = int(quantity)
 
-    json_response = await api.pop(
+    json_response = api.pop(
             stage, 
             quantity
             )
@@ -178,7 +178,7 @@ async def push(request):
         log.warning(text)
         return web.Response(status = 400, text = text)
 
-    json_response = await api.push(
+    json_response = api.push(
             stage, 
             json_data, 
             push_if_new, 
@@ -226,7 +226,7 @@ async def store(request):
             log.warning('%s: %s' % (text, json_data))
             return web.Response(status = 400, text = text)
 
-        id_response = await api.store(
+        id_response = api.store(
                 stage, 
                 json_data
                 )
@@ -236,7 +236,7 @@ async def store(request):
         # JSON-ify plain text format
         text_data = await request.text()
 
-        id_response = await api.store(
+        id_response = api.store(
                 stage, 
                 text_data
                 )
@@ -305,7 +305,7 @@ async def load(request):
         filter_['_id'] = objectid.ObjectId(filter_['_id'])
 
     try:
-        json_response = await api.load(
+        json_response = api.load(
                 stage, 
                 filter_,
                 delete
