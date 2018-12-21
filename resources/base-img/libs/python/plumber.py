@@ -64,15 +64,15 @@ async def pop(stage, quantity = 1):
             )
     return results
 
-async def push(stage, entry_list, push_if_new, push_if_older_than):
+async def push(stage, entry_list, push_if_new = False, push_if_older_than = 0):
     """Push entries to a stage queue.
 
     Parameters:
         
         stage: The number of stage queue.
         entry_list: List of objects.
-        push_if_new: Push only the entries which haven't been previously pushed.
-        push_if_older_than: Push only the entries which haven't been previously pushed or that have been older than a number of seconds.
+        push_if_new: Push only the entries which haven't been previously pushed. Default is false.
+        push_if_older_than: Push only the entries which haven't been previously pushed or that have been older than a number of seconds. Default is 0 (disabled).
     
     Returns: the number of pushed entries.
     """

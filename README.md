@@ -114,7 +114,7 @@ Endpoints can be accessed via `http://plumber/` from inside the containers netwo
 
 Python library can be imported from inside the containers with `import plumber`.
 
-* **async def push(stage, entry_list, push_if_new, push_if_older_than)**
+* **async def push(stage, entry_list, push_if_new = False, push_if_older_than = 0)**
 
     Push entries to a stage queue.
 
@@ -122,8 +122,8 @@ Python library can be imported from inside the containers with `import plumber`.
         
     - stage: The number of stage queue.
     - entry_list: List of objects.
-    - push_if_new: Push only the entries which haven't been previously pushed.
-    - push_if_older_than: Push only the entries which haven't been previously pushed or that have been older than a number of seconds.
+    - push_if_new: Push only the entries which haven't been previously pushed. Default is False.
+    - push_if_older_than: Push only the entries which haven't been previously pushed or that have been older than a number of seconds. Default is 0 (disabled).
     
     Returns: the number of pushed entries.
 
